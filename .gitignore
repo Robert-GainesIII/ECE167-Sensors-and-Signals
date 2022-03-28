@@ -38,6 +38,7 @@ a.out
 
 
 # Other
+*.DS_Store
 *.exe
 *.tgz
 *.tar
@@ -53,3 +54,5 @@ a.out
 # MPLABX Whitelist
 !project.xml
 !configurations.xml
+/Lab0/Lab0.X/dist/
+/Lab0/Lab0.X/build/
