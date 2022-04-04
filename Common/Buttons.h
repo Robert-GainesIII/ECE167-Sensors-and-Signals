@@ -15,6 +15,7 @@
  */
 
 #include <stdint.h>
+#include <xc.h>
 
 // We rely on this file to define various macros for working with the hardware buttons.
 #include "BOARD.h"
