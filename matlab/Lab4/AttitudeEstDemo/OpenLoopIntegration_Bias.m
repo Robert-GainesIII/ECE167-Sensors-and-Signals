@@ -4,9 +4,9 @@ close all;
 
 dT = 1;
 
-numSteps=20;
+numSteps=30;
 
-p=deg2rad(0);
+p=deg2rad(10);
 q=deg2rad(0);
 r=deg2rad(0);
 gyroInput=[p;q;r];

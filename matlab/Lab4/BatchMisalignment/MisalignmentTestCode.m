@@ -22,8 +22,8 @@ si = rand(3,1)-0.5;
 si = si/norm(si);
 %si = mi;          % uncomment this line to test mutliple of the same sensors
 
-Mb = [];
-Sb = [];
+Mb = []; %main body
+Sb = []; %secondary body
 
 for i = 1:n,
     Ri = expm(skew((randn(3,1))*2*pi));
@@ -61,7 +61,7 @@ if plotflag,
     axis('equal');
 end
 %% Call Elkaim Code
-[Rge,Pge] = AlignMasterSlave(Mb+addnoise*Mbn,Sbmeas+addnoise*Sbn,mi,si,eye(3));
+[Rge,Pge] = AlignPrimarySecondary(Mb+addnoise*Mbn,Sbmeas+addnoise*Sbn,mi,si,eye(3));
 if verbose,
     fprintf('\nMisalignment Results:');
     Rmis-Rge

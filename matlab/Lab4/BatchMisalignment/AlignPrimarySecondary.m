@@ -1,15 +1,15 @@
-function [Rmis, Pbody] = AlignMasterSlave(Mb,Sbmeas,mi,si,Rmishat_0,i);
-% function [Rmis, Pbody] = AlignMasterSlave(Mb,Sbmeas,mi,si,Rmishat_0,i);
+function [Rmis, Pbody] = AlignPrimarySecondary(Pb,Sbmeas,pi,si,Rmishat_0,i);
+% function [Rmis, Pbody] = AlignPrimarySecondary(Pb,Sbmeas,pi,si,Rmishat_0,i);
 %
-% function generates the misalignment matrix to bring the slave sensor
-% triad into perfect alignment with the the master triad. Solution based on
-% Markley's SVD solution to Whaba's problem.
+% function generates the misalignment matrix to bring the secondary sensor
+% triad into perfect alignment with the the primary triad. Solution based on
+% Markley's SVD solution to Wahba's problem.
 %
 % Inputs:
-%         Mb - 3xn matrix of body master measurements
-%         Sbmeas - 3xn matrix of body slave measurements
-%         mi - master unit vector in inertial coordinates
-%         si - slave unit vector in inertial coordinates
+%         Pb - 3xn matrix of body primary measurements
+%         Sbmeas - 3xn matrix of body secondary measurements
+%         pi - primary unit vector in inertial coordinates
+%         si - secondary unit vector in inertial coordinates
 %         i - optional number of iterations
 %
 % Outputs:
@@ -21,9 +21,9 @@ animatePlot = 0;
 verbose = 1;
 Delta = [];
 
-mi = mi/norm(mi);
+pi = pi/norm(pi);
 si = si/norm(si);
-Mb = colnorm(Mb);
+Pb = colnorm(Pb);
 Sbmeas = colnorm(Sbmeas);
 
 Rmishat_old = zeros(3,3);
@@ -46,9 +46,9 @@ for iter = 1:num2iter,
     end
     Sbhat = Rmishat' * Sbmeas;
     Sihat = [];
-    [m,n]=size(Mb);
+    [m,n]=size(Pb);
     for i = 1:n,
-        Ri = whabaSVD([mi si],[Mb(:,i) Sbhat(:,i)]);
+        Ri = whabaSVD([pi si],[Pb(:,i) Sbhat(:,i)]);
         Sihat(:,i) = Ri*si;
     end
     Rmishat_old = Rmishat;
@@ -78,7 +78,7 @@ if (createPlot),
     figure(2);
     semilogy([1:length(Delta)]',Delta','k+');
     grid on
-    title('Frobenius norm of $$\hat{\mathcal{R}^k}_{mis} - \hat{\mathcal{R}^{k-1}}_{mis}$$',...
+    title('Frobenius norm of $$\hat{\mathcal{R}^k}_{pis} - \hat{\mathcal{R}^{k-1}}_{pis}$$',...
           'interpreter','latex')
     xlabel('Iterations'), ylabel('log(Norm)');
 end

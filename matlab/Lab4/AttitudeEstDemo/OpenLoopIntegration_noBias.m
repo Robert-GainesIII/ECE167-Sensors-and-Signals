@@ -2,9 +2,9 @@ clear;
 clear clc;
 close all;
 
-dT = 1/20;
+dT = 1;
 
-p=deg2rad(20);
+p=deg2rad(10);
 q=deg2rad(0);
 r=deg2rad(0);
 gyroInput=[p;q;r];
