@@ -6,12 +6,12 @@
  */
 
 #include <xc.h>
-#include <BOARD.h>
-#include <AD.h>
+#include "BOARD.h"
+#include "AD.h"
 
 #include <sys/attribs.h>
 
-#include <serial.h>
+#include "serial.h"
 
 #include <stdio.h>
 

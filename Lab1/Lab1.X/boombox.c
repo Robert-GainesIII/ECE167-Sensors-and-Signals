@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "BOARD.h"
-#include "Buttons.h"
 #include "serial.h"
 #include "AD.h"
 #include "ToneGeneration.h"
@@ -23,7 +22,6 @@ int main(void)
 {
     BOARD_Init();
     AD_Init();
-    ButtonsInit();
     ToneGeneration_Init();
     
     printf("Hello World!\n");
@@ -40,7 +38,8 @@ int main(void)
     uint8_t adcFlag = 0;
     uint16_t offset = 0;
     uint8_t SCALE = 5;
-    AD_AddPins(AD_A0);
+    AD_AddPins(AD_A1);
+    AD_AddPins(AD_A2);
     
     
     while (1){
@@ -48,7 +47,7 @@ int main(void)
       
         
         if(AD_IsNewDataReady()){
-            newData = AD_ReadADPin(AD_A0);
+            newData = AD_ReadADPin(AD_A1);
             
             if(abs(newData - data) > THRESH){
                 data = newData;
@@ -62,53 +61,6 @@ int main(void)
         }
         
         
-        uint8_t bEvent = ButtonsCheckEvents();
-        
-        
-        if (bEvent & BUTTON_EVENT_1UP){
-            ToneGeneration_ToneOff();
-            buttonFlag = 0;
-        }
-        if (bEvent & BUTTON_EVENT_2UP){
-            ToneGeneration_ToneOff();
-            buttonFlag = 0;
-        }
-        
-        if (bEvent & BUTTON_EVENT_3UP){
-            ToneGeneration_ToneOff();
-            buttonFlag = 0;
-        }
-        
-        if (bEvent & BUTTON_EVENT_4UP){
-            ToneGeneration_ToneOff();
-            buttonFlag = 0;
-        }
-        
-        
-        
-        if (bEvent & BUTTON_EVENT_1DOWN) {
-            ToneGeneration_SetFrequency(offset + TONE_196);
-            ToneGeneration_ToneOn();
-            adcFlag = 1;
-        }
-        
-        if (bEvent & BUTTON_EVENT_2DOWN) {
-            ToneGeneration_SetFrequency(offset + TONE_293);
-            ToneGeneration_ToneOn();
-            adcFlag = 1;
-        }
-        
-        if (bEvent & BUTTON_EVENT_3DOWN) {
-            ToneGeneration_SetFrequency(offset + TONE_440);
-            ToneGeneration_ToneOn();
-            adcFlag = 1;
-        }
-        
-        if (bEvent & BUTTON_EVENT_4DOWN) {
-            ToneGeneration_SetFrequency(offset + TONE_659);
-            ToneGeneration_ToneOn();
-            adcFlag = 1;
-        }
         
         if(!adcFlag){ToneGeneration_ToneOn();}
        
@@ -123,5 +75,3 @@ int main(void)
     
     BOARD_End();
 }
-
-
