@@ -14,9 +14,9 @@
 #include "serial.h"
 
 
-#define ACCELDATA
+//#define ACCELDATA
 //#define MAGDATA
-//#define GYRODATA
+#define GYRODATA
 
 
 #define DELAY(x)    {int wait; for (wait = 0; wait <= x; wait++) {asm("nop");}}
@@ -54,16 +54,20 @@ int main(void) {
 
 
     int globalcount = 0;
-    int count = 0;
     int freqCount = 0;
+    int xangle = 0;
+    int yangle = 0;
+    int zangle = 0;
     int x,y,z;
+    int count = 0;
+    DelayMicros(100000);
     while (1) {
-        count ++;
+     
         globalcount ++;
         
         
-        if(count > FREQ && !(freqCount >= GLOBALFREQ)){
-            count = 0;
+       
+         
             freqCount ++;
             
             
@@ -74,45 +78,35 @@ int main(void) {
             y = BNO055_ReadAccelY();
             z = BNO055_ReadAccelZ();
     
-            //fprintf(fptr,"%d \r\n",z);
-            //printf("%d ", x);
-            //printf("%d ", y);
-            printf("%d ", z);
-            printf("\r\n");
+           
+            printf("%f \r\n", z/1000.0f);
+           
             #endif
 
             #ifdef GYRODATA
-            printf("GyroX: %i \r\n", BNO055_ReadGyroX());
-            printf("GyroY: %i \r\n", BNO055_ReadGyroY());
-            printf("GyroZ: %i \r\n", BNO055_ReadGyroZ());
+            xangle += BNO055_ReadGyroX()/1000;
+            yangle += BNO055_ReadGyroY()/1000;
+            zangle += BNO055_ReadGyroZ()/1000;
+            //printf("x angle: %d \r\n", xangle);
+            //printf("y angle: %d \r\n", yangle);
+            count ++;
+            if(count >= 5){
+                count = 0;
+                printf("z angle: %d \r\n", zangle);
+            }
+           
             #endif
 
             #ifdef MAGDATA
-            printf("MagX: %i \r\n", BNO055_ReadMagX());
-            printf("MagY: %i \r\n", BNO055_ReadMagY());
-            printf("MagZ: %i \r\n", BNO055_ReadMagZ());
+            printf("%d ", BNO055_ReadMagX());
+            printf("%d ", BNO055_ReadMagY());
+            printf("%d ", BNO055_ReadMagZ());
+            printf("\r\n");
             #endif
 
-     
+            DelayMicros(100000);
             //DELAY(A_BIT);
-        }
+        
     }
-    /*
-    for(int i =0; i < 1000; i++ ){
-        printf("%f ", xList[i]);
-    }
-    printf("\r\n================================\r\n");
-    for(int i =0; i < 1000; i++ ){
-        printf("%f ", yList[i]);
-    }
-    printf("\r\n================================\r\n");
-    for(int i =0; i < 1000; i++ ){
-        printf("%f ", zList[i]);
-    }
-    printf("\r\n================================\r\n");
-    //printf("count is: %i \r\n", freqCount);
-    //printf("Global count is: %i \r\n", globalcount);
-    //fclose(fptr);
-     *
-     */
+   
 }
